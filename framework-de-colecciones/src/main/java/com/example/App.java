@@ -156,16 +156,29 @@ public class App {
     	 * 
     	 * La cantidad de elementos de la lista debe ser 3 */
     	
-    	Manzana manzana1 = new Manzana(3.4, "Dulce", 
-    					   new BigDecimal(2.3).setScale(2, RoundingMode.HALF_UP), "Golden");
-    	Manzana manzana2 = new Manzana(2.3, "Amarga", 
-    			           new BigDecimal(4.50).setScale(2, RoundingMode.HALF_UP), "Reineta");
-    	Manzana manzana3 = new Manzana(1.5, "Agridulce", 
-    					   new BigDecimal(1.45).setScale(2, RoundingMode.HALF_UP), "Roja");
+
+    	Manzana manzana1 = Manzana.builder()
+    			.variedad("Golden")
+    			.peso(500.0)
+    			.precio(new BigDecimal(2.3).setScale(2, RoundingMode.HALF_UP))
+    			.build();
     	
-    	List<Manzana> listadoManzanasInmutable = List.of(manzana1, manzana2, manzana3);
+    	Manzana manzana2 = Manzana.builder()
+    			.variedad("Royal")
+    			.peso(350.5)
+    			.precio(new BigDecimal(1.8).setScale(2, RoundingMode.HALF_UP))
+    			.build();
     	
-    	System.out.println("Listado de Manzanas: " + listadoManzanasInmutable);
+    	Manzana manzana3 = Manzana.builder()
+    			.variedad("Reineta")
+    			.peso(750.0)
+    			.precio(new BigDecimal(4.7).setScale(2, RoundingMode.HALF_UP))
+    			.build();
+    	
+    		
+    	List<Manzana> listaManzanas = List.of(manzana1, manzana2, manzana3);
+    	
+    	System.out.println("El contenido de la lista de manzanas es: " + listaManzanas);
     	
     }
 }
