@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class App {
@@ -29,7 +30,8 @@ public class App {
       	
     	// Uso de la interfaz Iterator para eliminar un elemento de la coleccion mientras se recorre.
     	// Para ello, como Ejercicio # 1 del viernes 19 de Junio, se pide:
-    	/* Crear una lista de Persona, mutable, donde cada Persona sea un record, con las siguientes propieades
+    	/* Crear una lista de Persona, mutable, donde cada Persona sea un record, 
+    	 * con las siguientes propieades
     	 * 
     	 * - nombre
     	 * - apellido1
@@ -105,6 +107,46 @@ public class App {
     	listaModificableDePersonas.add(persona5);
     	
     	System.out.println("lista modificable:"+ listaModificableDePersonas);
+    	
+    	// Calculamos la media de los salarios de la lista de personas
+    	
+    	BigDecimal sumaSalarios = BigDecimal.ZERO;
+    	
+    	for (Persona persona : listaModificableDePersonas) {	
+			sumaSalarios = sumaSalarios.add(persona.salario());
+		}
+    	
+    	BigDecimal mediaSalarios = sumaSalarios.divide(new BigDecimal(listaModificableDePersonas.size()));
+		
+		System.out.println("Media de salarios: " + mediaSalarios);
+		
+		// Eliminamos a todas las personas del genero HOMBRE, que tengan salario inferior a la media
+		
+		Iterator<Persona> it = listaModificableDePersonas.iterator();
+		
+		// Mostrar el total de elementos de la coleccion original
+		System.out.println("Total de elementos de la coleccion original: " + 
+					listaModificableDePersonas.size());
+		
+		while (it.hasNext()) { 
+			
+			Persona p = it.next();
+			
+			/* El metodo next() cada vez que se invoca extrae una persona de la coleccion 
+			 * Por lo cual, para comparar el salario de una persona con el salario medio, 
+			 * estaria bien la sentencia siguiente: */
+			if (p.salario().doubleValue() < mediaSalarios.doubleValue() && 
+					p.genero().equals(Genero.HOMBRE)) {
+				
+				// Eliminamos a la persona
+				it.remove();
+			}
+		}
+		
+		// Mostramos el total de elementos restantes una vez que hemos eliminado
+		// a los Hombres con salario inferior a la media
+		System.out.println("Total de elementos restantes: " 
+		                    + listaModificableDePersonas.size());
     }
 }
 
