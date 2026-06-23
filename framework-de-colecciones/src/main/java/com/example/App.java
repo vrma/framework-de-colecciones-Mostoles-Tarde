@@ -4,47 +4,43 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class App {
 	
     public static void main(String[] args) {
     	
-    	/* Existen 3 formas de iterar o recorrer una coleccion, siendo una de ellas la unica que 
-    	 * permite eliminar un elemento de la coleccion mientras se recorre 
+    	/* Operaciones de Agregado, para recorrer y operar con los elementos de una coleccion
     	 * 
-    	 * Traversing Collections:
+    	 * En el siguiente enlace se hace una breve introduccion a las Operaciones de Agregado
     	 * https://docs.oracle.com/javase/tutorial/collections/interfaces/collection.html
     	 * 
-    	 * Formas de recorrer una coleccion
+    	 * Y en el link siguiente ya se abordan con mas profundidad:
+    	 * https://docs.oracle.com/javase/tutorial/collections/streams/index.html
     	 * 
-    	 * 1- Mediante un Iterador (Iterator en Ingles)
-    	 * 2- Mediante una sentencia for mejorada
-    	 * 3- Mediante Operaciones de Agregado (Metodos de la clase Stream, Expresiones Lambda,
-    	 * 	  Metodos por referencia, en fin, PROGRAMACION FUNCIONAL)
+    	 * Las Operaciones de Agregado implican convertir la coleccion en un flujo (Stream)
+    	 * de elementos que comienzan a circular por una tuberia (pipeline), que podemos 
+    	 * entenderla como una linea de produccion, por ejemplo, una cadena donde se rellenan
+    	 * latas de conserva, que en cada punto de la cadena se hace una operacion diferente, 
+    	 * sobre la lata de conserva, es decir, un operador la rellena, otro le pone la etiqueta
+    	 * otro la cierra, otro la mete en una caja, etc.
     	 * 
-    	 * Y la ultima, que no por se la ultima es la menos importante, sino todo lo contrario, es la
-    	 * sugerida, y por ello la dejamos para el final
-    	 * */
-      	
-    	// Uso de la interfaz Iterator para eliminar un elemento de la coleccion mientras se recorre.
-    	// Para ello, como Ejercicio # 1 del viernes 19 de Junio, se pide:
-    	/* Crear una lista de Persona, mutable, donde cada Persona sea un record, 
-    	 * con las siguientes propieades
+    	 * Concretamente, la tuberia es una secuencia de operaciones de agregado, es decir, 
+    	 * operaciones que agrupan los elementos que van circulando por la tuberia para
+    	 * hacer algun tipo de operacion. 
     	 * 
-    	 * - nombre
-    	 * - apellido1
-    	 * - apellido2
-    	 * - genero
-    	 * - fechaNacimiento
-    	 * - salario
+    	 * Especificamente, la tuberia son los metodos de la clase Stream, que tiene un origen
+    	 * que puede ser una coleccion, un array, un socket de red, etc., tambien tiene cero,
+    	 * una o varias operaciones intermedias y solamente una operacion terminal, al 
+    	 * final de la tuberia, que reducirá todos los elementos que van pasando por la tuberia
+    	 * a un solo elemento, o a una nueva coleccion 
     	 * 
-    	 * La lista de Persona tiene que contener 5 personas
-    	 * 
-    	 * -- Para hacer con el Profesor
-    	 * Una vez creada la lista, la recorremos y eliminamos a todas las personas del genero HOMBRE, 
-    	 * que tengan salario inferior a la media */
+    	 * Las Operaciones de Agregado no es una sintaxis bonita, sino el soporte de la JVM
+    	 * que tienen detras estas operaciones es muy superior a todo lo que anteriormente 
+    	 * existia con los bucles explicitos (entiendase for clasico y mejorado, while, do 
+    	 * while, etc) */
     	
     	Persona persona1 = Persona.builder()
 				.nombre("Maria ")
@@ -93,61 +89,89 @@ public class App {
 				.salario(new BigDecimal(6500))
 				.build();
     	
-    	//List<Persona> listaInmutableDePersona = List.of(persona1,persona1,persona3,persona4, persona5);
-    	List<Persona> listaModificableDePersonas  = new ArrayList<Persona>();
+    	List<Persona> personas  = new ArrayList<Persona>();
     	
-    	//listaModificableDePersonas.addAll(listaInmutableDePersona);
     	
-    	/*Otra variante de agregarle persona a la lista modificable*/
+    	personas.add(persona1);
+    	personas.add(persona2);
+    	personas.add(persona3);
+    	personas.add(persona4);
+    	personas.add(persona5);
     	
-    	listaModificableDePersonas.add(persona1);
-    	listaModificableDePersonas.add(persona2);
-    	listaModificableDePersonas.add(persona3);
-    	listaModificableDePersonas.add(persona4);
-    	listaModificableDePersonas.add(persona5);
+    	/* Obtener, utilizando Operaciones de Agregado, el salario promedio
+    	 * de todas las personas del genero MUJER */
     	
-    	System.out.println("lista modificable:"+ listaModificableDePersonas);
+    	// Paso numero 1. Convertir la coleccion de personas, en este caso, en un flujo (stream)
+    	// de elementos Persona, que va comenzar a circular por una tuberia (pipeline), 
+    	// es decir, una secuencia de operaciones, metodos de la clase Stream
     	
-    	// Calculamos la media de los salarios de la lista de personas
+    	/* La coleccion se puede convertir en un flujo, utilizando el metodo stream() o 
+    	 * parallelStream(), este ultimo permitiria procesar los elementos de la coleccion
+    	 * en un flujo paralelo, haciendo uso de todos los nucleos y los hilos de ejecucion
+    	 * del procesador del equipo. No obstante, si la lista no es de muchos elementos
+    	 * no se a notar gran diferencia entre utilizar el metodo stream() o parallelStream() */
     	
-    	BigDecimal sumaSalarios = BigDecimal.ZERO;
+    	/* Las Operaciones de Agregado, conjuntamente con las expresiones Lambda, los metodos
+    	 * de la clase Stream, y los metodos por referencia es lo que se llama tambien, la 
+    	 * PROGRAMACION FUNCIONAL, que aunque Java no es un lenguaje Funcional puro, la 
+    	 * implementa conjutamente con la programacion orientada a objetos.
+    	 * 
+    	 * En la PROGRAMACION FUNCIONAL, las funciones, los metodos se convierten en 
+    	 * "ciudadanos de primera clase", es decir, que al igual que con las variables,
+    	 * se pueden pasar, las funciones, como parametro a los metodos y se pueden devolver
+    	 * tambien. La PROGRAMACION FUNCIONAL, entre otras cosas, permite pasar funcionalidad 
+    	 * a los metodos, es un tipo de programacion declarativa, no imperativa, si pide
+    	 * que es lo que se desea y el metodo responde a esa peticion (request) de una forma 
+    	 * concreta */
     	
-    	for (Persona persona : listaModificableDePersonas) {	
-			sumaSalarios = sumaSalarios.add(persona.salario());
-		}
+    	Stream<Persona> flujoDePersonas = personas.stream();  
     	
-    	BigDecimal mediaSalarios = sumaSalarios.divide(new BigDecimal(listaModificableDePersonas.size()));
-		
-		System.out.println("Media de salarios: " + mediaSalarios);
-		
-		// Eliminamos a todas las personas del genero HOMBRE, que tengan salario inferior a la media
-		
-		Iterator<Persona> it = listaModificableDePersonas.iterator();
-		
-		// Mostrar el total de elementos de la coleccion original
-		System.out.println("Total de elementos de la coleccion original: " + 
-					listaModificableDePersonas.size());
-		
-		while (it.hasNext()) { 
-			
-			Persona p = it.next();
-			
-			/* El metodo next() cada vez que se invoca extrae una persona de la coleccion 
-			 * Por lo cual, para comparar el salario de una persona con el salario medio, 
-			 * estaria bien la sentencia siguiente: */
-			if (p.salario().doubleValue() < mediaSalarios.doubleValue() && 
-					p.genero().equals(Genero.HOMBRE)) {
-				
-				// Eliminamos a la persona
-				it.remove();
-			}
-		}
-		
-		// Mostramos el total de elementos restantes una vez que hemos eliminado
-		// a los Hombres con salario inferior a la media
-		System.out.println("Total de elementos restantes: " 
-		                    + listaModificableDePersonas.size());
-    }
+    	/* El metodo filter recibe lo que esta entre parentesis */
+    	
+    	Predicate<? super Persona> predicate;
+    	
+    	/* Cuando en el diamante esta la palabra reservada super, a dicha coleccion se le
+    	 * pueden agregar elementos, pero cuando la palabra reservada es extends a dicha
+    	 * coleccion NO se le pueden agregar elementos, porque es una coleccion inmutable
+    	 * Ejemplo a continuacion: */
+    	List<? extends Persona> listaInmutable; // No se puede usar el metodo add() para 
+    											// agregar elementos
+    	List<? super Persona> listaModificable; // Si se le pueden agregar elementos con 
+    											// el metodo add()
+    	
+    	/* Predicate es una interfaz fuPredicate<? ncional. ¿Que es una Interfaz Funcional? Es una interface que
+    	 * tiene varios metodos (metodos con cuerpo, implementados, no abstractos
+    	 * que pueden ser static, private, etc.), pero solamente UN METODO ABSTRACTO 
+    	 * 
+    	 * Concretamente la interfaz funcional Predicate tiene solamente un metodo Abstracto, 
+    	 * de todos los que tiene, dicho metodo se llama test(T t) y prueba que el objeto 
+    	 * que recibe como parametro cumpla una condicion determinada, y si la cumple, el 
+    	 * objeto pasara el siguiente nivel de la tuberia 
+    	 * 
+    	 * A Continuacion explico lo que esta dentro del diamante <? super Persona> 
+    	 * 
+    	 * Una lista que en el diamente tenga ? significa que es una coleccion que admite
+    	 * cualquier tipo de elemento. El caracter ? se le llama comodin
+    	 * 
+    	 * List<?> listaDeCualquierCosa; Pero este lista es dificil de manejar posteriormente, 
+    	 * por lo que una coleccion que utilice el signo ? debe estar acotada, por ejemplo
+    	 * 
+    	 * Collection<? super Persona> // Partimos de que tener una coleccion totalmente generica
+    	 * no es una buena idea, sino que dicha coleccion tiene que estar acotada, como seria este
+    	 * caso que indica que esta coleccion puede almacenar elementos de cualquier tipo (?)
+    	 * pero que este acotado por encima (super) por el tipo Persona, ES DECIR, que en este caso
+    	 * la coleccion admite elementos de cualquier tipo donde la clase Persona sea el super tipo, 
+    	 * es decir, la clase base, la madre, y por supuest tipos Persona tambien va a admitir */
+    	
+    	/* El metodo filter esta gritando que le pasen como parametro "algo" que implemente
+    	 * la interfaz Predicate, y de momento lo unico que implementa una interfaz es una clase 
+    	 * 
+    	 * Y vamos a comenzar implementando una clase externa llamada CriterioDeFiltro */
+    	
+    	flujoDePersonas.filter(new CriterioDeFiltro());
+    	
+    	
+    	}
 }
 
 
