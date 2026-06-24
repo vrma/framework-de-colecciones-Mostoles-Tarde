@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.OptionalDouble;
 import java.util.Set;
@@ -313,6 +315,57 @@ public class App {
 		  * */
 		 
 		 nombresSinDuplicados2.forEach(System.out::println);
+		 
+		 /* OBJECT ORDERING (Ordenamiento de Objetos) 
+		  * 
+		  * https://docs.oracle.com/javase/tutorial/collections/interfaces/order.html 
+		  * 
+		  * Los algoritmos son una parte integral del framework de colecciones
+		  * 
+		  * A continuacion vamos a ver los algoritmos de ordenamiento (sort) implementados
+		  * en la clase Collections
+		  * 
+		  * Como ejemplo vamos a ordenar la lista de nombres siguiente segun el Orden 
+		  * Natural, lexicograficamente de la A a la Z
+		  * 
+		  * */
+		 
+		 List<String> nombres = Arrays.asList("Miguel", "Angel", 
+				 "Youssef", "Yodalis", "Elida", "Jakelin", "Juan", "Carlos", "Gina");
+		 
+		 System.out.println("Listado original de nombres: ");
+		 nombres.forEach(System.out::println);
+		 
+		 // Ordenamiento segun el orden natural (Natural Ordering)
+		 Collections.sort(nombres);
+				 
+		 System.out.println("Listado de nombres ordenado, alfabeticamente, lexicograficamente");
+		 nombres.forEach(System.out::println);
+		 
+		 /* Vamos a intentar ordenar la lista de personas 
+		  * ¿Que va a pasar? 
+		  * 
+		  * Que no es posible ordenar mi listado de personas, compuesto por elementos que son
+		  * record de Persona, ¿Por que entonces si se pudo ordenar las lista de nombres? 
+		  * Rta. Porque todos los tipos de datos de Java implementan la interfaz Comparable,
+		  * mientras que el tipo record Persona creado por nosotros no implementa la interfaz
+		  * Comparable, en resumen, que si no se implementa la interfaz Comparable el metodo
+		  * sort() no tiene medios para comparar los elementos del tipo de datos concreto.
+		  * 
+		  * IMPORTANTE!!! El Orden Natural (Natural Ordering) viene dado por la implementacion
+		  * de la interfaz Comparable, y si el tipo de datos no implementa dicha interfaz pues 
+		  * NO tiene orden natural, que se podrá ordenar de otra manera pero no segun 
+		  * el orden natural
+		  * 
+		  * ver la tabla que esta en el link suministrado inicialmente: */
+		 
+		 /* Se entiende que para ordenar la lista de personas, el tipo de datos de 
+		  * los elementos que conforman la lista de personas, que el record Persona 
+		  * tiene que implementar, si o si, la interfaz Comparable para que una coleccion
+		  * de tipo record de Persona pueda ser ordenada segun el Orden Natural */
+		 
+		 Collections.sort(personas);
+		 
 	}
 }
 
