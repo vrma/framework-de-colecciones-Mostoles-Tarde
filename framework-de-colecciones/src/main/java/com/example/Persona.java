@@ -26,9 +26,25 @@ public record Persona (String nombre,
 		// persona es la que se recibe como parametro del metodo compareTo
 		
 		int cmpPrimerApellido = this.apellido1.compareTo(persona.apellido1()); 
+		int cmpSegundoApellido = this.apellido2.compareTo(persona.apellido2());
+		int cmpNombre = this.nombre.compareTo(persona.nombre());
 		
+		return cmpPrimerApellido != 0 ? 
+					   cmpPrimerApellido : 
+						   cmpSegundoApellido != 0 ? 
+								 cmpSegundoApellido  :
+									   cmpNombre;
 		
-		return 0;
+		// Recordando cual es la sintaxis del operador ternario
+		
+		/*
+		int x = 4;
+		int y = 5;
+		
+		String resultado;
+		
+		resultado = (x != y && x > 2 || y >= 5) ? "Si, se cumple" : "No, no se cumple";
+		*/
 	}
 
 }

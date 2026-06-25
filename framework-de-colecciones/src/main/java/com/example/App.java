@@ -68,7 +68,7 @@ public class App {
 				.genero(Genero.HOMBRE).fechaNacimiento(LocalDate.of(1997, Month.MARCH, 05))
 				.salario(new BigDecimal(5800)).build();
 
-		Persona persona5 = Persona.builder().nombre("Wilson ").apellido1("Ruiz").apellido2("Alvares")
+		Persona persona5 = Persona.builder().nombre("Wilson ").apellido1("flores").apellido2("Martinez")
 				.genero(Genero.HOMBRE).fechaNacimiento(LocalDate.of(1989, Month.AUGUST, 15))
 				.salario(new BigDecimal(6500)).build();
 
@@ -363,8 +363,14 @@ public class App {
 		  * los elementos que conforman la lista de personas, que el record Persona 
 		  * tiene que implementar, si o si, la interfaz Comparable para que una coleccion
 		  * de tipo record de Persona pueda ser ordenada segun el Orden Natural */
+		
+		 System.out.println("Listado de personas sin ordenar");
+		 personas.forEach(System.out::println);
 		 
 		 Collections.sort(personas);
+		 
+		 System.out.println("Listado de personas ordenado segun el ORDEN NATURAL");
+		 personas.forEach(System.out::println); 
 		 
 	}
 }
