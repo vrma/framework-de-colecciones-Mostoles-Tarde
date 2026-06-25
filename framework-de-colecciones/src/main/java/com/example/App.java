@@ -372,6 +372,40 @@ public class App {
 		 System.out.println("Listado de personas ordenado segun el ORDEN NATURAL");
 		 personas.forEach(System.out::println); 
 		 
+		 /* Imaginate que el Jefe de nuestro Dpto NO necesita ordenar las personas
+		  * segun el ORDEN NATURAL del record Persona, sino que el necesita ordenar
+		  * la lista de personas por el salario, de mayor a menor, es decir, en orden
+		  * inverso. 
+		  * 
+		  * El problema es que en nuestro Dpto NO tenemos el codigo fuente del record 
+		  * Persona, para cambiar el ORDEN NATURAL. ¿Que podemos hacer entonces para 
+		  * ordenar las personas por el salario SIN modificar el ORDEN NATURAL?
+		  * * */
+		 
+		 /* Rta. Por suerte, el metodo sort() de la clase Collections puede recibir
+		  * un segundo parametro que seria el criterio de comparacion, para 
+		  * comparar dos personas sin que intervenga el ORDEN NATURAL */
+		 
+		 Collections.sort(personas, 
+				  (p1, p2) -> p1.salario().compareTo(p2.salario()));
+		 
+		 System.out.println("Listado de personas ordenado segun el comparator por el salario de"
+		 		+ "menor a mayor");
+		 personas.forEach(System.out::println);
+		 
+		 // ¿Como hacer para que muestre las personas de mayor salario primero?
+		 // Rta. En el cuerpo de la lambda cambiando el orden, primero la persona 2 
+		 // y luego la 1
+		 	
+		 Collections.sort(personas, 
+				  (p1, p2) -> p2.salario().compareTo(p1.salario()));
+		 
+		 System.out.println("Listado ordenado de mayor a menor salario");
+		 personas.forEach(System.out::println);
+		 
+		 
+		 
+		 
 	}
 }
 
