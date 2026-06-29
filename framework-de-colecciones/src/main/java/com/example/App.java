@@ -403,6 +403,25 @@ public class App {
 		 System.out.println("Listado ordenado de mayor a menor salario");
 		 personas.forEach(System.out::println);
 		 
+		 /* Ejercicio # 1 del Lunes 29 de Junio.
+		  * 
+		  * Ordenar la coleccion de personas segun la edad de la persona de mayor a menor,
+		  * es decir, las personas mayores se muestren primero. */
+		 
+		 /* Ejercicio # 2 del Lunes 29 de Junio
+		  * 
+		  * Ordenar la coleccion de personas primero por el genero y luego por la edad, 
+		  * mostrando primero las personas mas jovenes de su genero. 
+		  * */
+		 
+		 /**
+		  * Ejercicio # 3 del Lunes 29 de Junio
+		  * 
+		  * Recorrer la coleccion de personas y obtener una nueva coleccion con las personas
+		  * del genero MUJER que nacieron en la segunda quincena del mes de su fecha de 
+		  * nacimiento.
+		  */
+		 
 		 
 		 
 		 
