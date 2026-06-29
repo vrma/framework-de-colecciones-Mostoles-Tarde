@@ -6,6 +6,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.OptionalDouble;
 import java.util.Set;
@@ -408,11 +409,30 @@ public class App {
 		  * Ordenar la coleccion de personas segun la edad de la persona de mayor a menor,
 		  * es decir, las personas mayores se muestren primero. */
 		 
+		 // Solucion aportada por Jakelin
+		 
+		 Collections.sort(personas, 
+					(p3, p4) -> p3.fechaNacimiento().compareTo(p4.fechaNacimiento()));
+			  System.out.println("Listado de personas ordenado segun la edad de la "
+			  		+ "persona de mayor a menor");
+			  personas.forEach( System.out::println);
+		 
 		 /* Ejercicio # 2 del Lunes 29 de Junio
 		  * 
 		  * Ordenar la coleccion de personas primero por el genero y luego por la edad, 
 		  * mostrando primero las personas mas jovenes de su genero. 
+		  * 
 		  * */
+			  
+		/* Para solucionar el ejercicio deberiamos crear un metodo que nos devuelva la edad
+		 * de la persona, en el record Persona */
+			  
+	    
+		Collections.sort(personas, Comparator.comparing(Persona::genero, 
+							Comparator.nullsFirst(Comparator.naturalOrder()))
+				.thenComparing(Persona::edad)
+				.reversed());  
+		
 		 
 		 /**
 		  * Ejercicio # 3 del Lunes 29 de Junio

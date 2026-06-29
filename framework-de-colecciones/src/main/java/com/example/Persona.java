@@ -2,6 +2,7 @@ package com.example;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import lombok.Builder;
 
@@ -47,4 +48,8 @@ public record Persona (String nombre,
 		*/
 	}
 
+	public long edad() {
+		
+		return ChronoUnit.YEARS.between(fechaNacimiento, LocalDate.now());
+	}
 }
