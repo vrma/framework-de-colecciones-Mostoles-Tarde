@@ -3,6 +3,7 @@ package com.example;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,7 +56,7 @@ public class App {
 		 */
 
 		Persona persona1 = Persona.builder().nombre("Maria").apellido1("lopez").apellido2("fernandes")
-				.genero(Genero.MUJER).fechaNacimiento(LocalDate.of(1985, Month.OCTOBER, 12))
+				.genero(Genero.MUJER).fechaNacimiento(LocalDate.of(1985, Month.OCTOBER, 20))
 				.salario(new BigDecimal(4500)).build();
 
 		Persona persona2 = Persona.builder().nombre("Maria").apellido1("flores").apellido2("Martinez")
@@ -428,11 +429,12 @@ public class App {
 		 * de la persona, en el record Persona */
 			  
 	    
-		Collections.sort(personas, Comparator.comparing(Persona::genero, 
-							Comparator.nullsFirst(Comparator.naturalOrder()))
-				.thenComparing(Persona::edad)
-				.reversed());  
-		
+		 Collections.sort(personas, Comparator.comparing(Persona::genero,
+				        Comparator.nullsFirst(Comparator.naturalOrder()))
+				 .thenComparing(Persona::edad));
+		 
+		System.out.println("Solucion al ejercicio 2");
+		personas.forEach(System.out::println);
 		 
 		 /**
 		  * Ejercicio # 3 del Lunes 29 de Junio
@@ -440,10 +442,17 @@ public class App {
 		  * Recorrer la coleccion de personas y obtener una nueva coleccion con las personas
 		  * del genero MUJER que nacieron en la segunda quincena del mes de su fecha de 
 		  * nacimiento.
+		  * 
 		  */
 		 
+		List<Persona> personasEjercicio3 = personas.stream()
+				.filter(p -> p.genero().equals(Genero.MUJER) && 
+				p.fechaNacimiento().with(TemporalAdjusters
+						.lastDayOfMonth()).minusDays(15).isBefore(p.fechaNacimiento()))
+		        .collect(Collectors.toList());
 		 
-		 
+		 System.out.println("Listado de personas del ejercicio # 3");
+		 personasEjercicio3.forEach(System.out::println);
 		 
 	}
 }
