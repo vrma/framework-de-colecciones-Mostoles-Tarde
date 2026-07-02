@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -114,10 +115,83 @@ public class App {
 			// devuelve null
 			Integer frecuenciaDeOcurrencia = m.get(nombre);
 			
-			m.put(nombre, frecuenciaDeOcurrencia == null ? 1 : frecuenciaDeOcurrencia++ );
+			m.put(nombre, frecuenciaDeOcurrencia == null ? 1 : ++frecuenciaDeOcurrencia );
 			
+			// La sentencia vacia, es decir, el punto y coma que esta a continuacion
+			// el unico objetivo que tiene es que no se vaya el cursor al inicio del
+			// del bucle for y deje de ver el valor que tiene la variable 
+			// frecuenciaDeOcurrencia. 
+			// Solamente es necesario cuando se esta depurando el codigo
+			
+			// int x = 4;
 			
 		}
+		
+		System.out.println("Mapa m resultante: ");
+		System.out.println(m);
+		
+		/* ¿Como se puede ordenar el mapa resultante, es decir, las claves del 
+		 * mapa resultante? 
+		 * 
+		 * Tener presente que si el mapa se ha construido a partir de la clase 
+		 * HashMap no se puede ordenar de ninguna manera porque dicha clase 
+		 * no garantiza ordenamiento. 
+		 * 
+		 * Entonces. ¿Como hacer para mostrar el mapa ordenado por las claves?  Insisto.
+		 * 
+		 * Rta. Crear un nuevo mapa, identico al desordenado, en cuanto a las claves y 
+		 * valor de mapa, pero a partir de una clase TreeMap, que si permite
+		 * ordenamiento, y se copiaria todo el contenido del mapa desordenado para 
+		 * el construido a partir del TreeMap */
+		
+		/*
+		 * A un mapa no se le pueden aplicar los algoritmos, de ordenamiento por ejemplo
+		 * que estan implementados en el metodo sort() de la clase Collections, porque 
+		 * una interface Map NO hereda de Collection */
+		
+		// Lexicograficamente quiere decir de la A a la Z
+		
+		Map<String, Integer> mapaOrdenadoLexicograficamente = new TreeMap<>();
+		
+		// Lo unico que hay que hacer es copiar todas las entradas del mapa 
+		// desordenado en el nuevo mapa
+		
+		mapaOrdenadoLexicograficamente.putAll(m);
+		
+		System.out.println("Mapa ordenado lexicograficamente: ");
+		System.out.println(mapaOrdenadoLexicograficamente);
+		
+		/* Ejercicio # 1 del Jueves 2 de Julio 
+		 * 
+		 * Ordenar las claves del mapa m en orden alfabetico inverso */
+		
+		// Solucion de Elida
+		
+		Map<String, Integer> mapaOrdenadoAlfabeticamenteInverso = new TreeMap<>(Comparator.reverseOrder());
+		mapaOrdenadoAlfabeticamenteInverso.putAll(m);
+		System.out.println("Mapa ordenado alfabeticamente inverso: ");
+		System.out.println(mapaOrdenadoAlfabeticamenteInverso);
+		
+		/* El mapa m se puede obtener en una sola sentencia, utilizando OPERACIONES DE 
+		 * AGREGADO.
+		 * 
+		 * Los mapas, por lo general, se obtienen a partir de recorrer una lista (List)
+		 * o un Set, raramente utilizando el metodo put
+		 * 
+		 * A  modo de ejemplo, vamos a obtener nuevamente el mapa m a partir de recorrer 
+		 * la lista con los nombres recibidos como argumentos cuando se lanza la 
+		 * aplicacion y le vamos a llamar a dicho mapa mm */
+		
+		 Map<String, Long> mm = nombres.stream()
+				 .collect(Collectors.groupingBy(n -> n, 
+						 Collectors.counting()));
+		 
+		 System.out.println("El mapa mm es exactamente igual que el m, pero obtenido con"
+		 		+ "mucho menos esfuerzo: ");
+		 
+		 System.out.println(m);
+		 System.out.println(mm);
+		 	
 		
 		
 	}
