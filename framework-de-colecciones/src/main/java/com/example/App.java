@@ -28,14 +28,14 @@ public class App {
 				.salario(new BigDecimal(4500)).build();
 
 		Persona persona2 = Persona.builder().nombre("Maria").apellido1("flores").apellido2("Martinez")
-				.genero(Genero.MUJER).fechaNacimiento(LocalDate.of(1966, Month.FEBRUARY, 02))
+				.genero(Genero.MUJER).fechaNacimiento(LocalDate.of(1985, Month.OCTOBER, 20 ))
 				.salario(new BigDecimal(6000)).build();
 
 		Persona persona3 = Persona.builder().nombre("Luis").apellido1("Acaro").apellido2("Silva").genero(Genero.HOMBRE)
 				.fechaNacimiento(LocalDate.of(1972, Month.DECEMBER, 22)).salario(new BigDecimal(6800)).build();
 
 		Persona persona4 = Persona.builder().nombre("Luis").apellido1("Paredes").apellido2("Hernandez")
-				.genero(Genero.HOMBRE).fechaNacimiento(LocalDate.of(1997, Month.MARCH, 05))
+				.genero(Genero.HOMBRE).fechaNacimiento(LocalDate.of(1972, Month.DECEMBER, 22))
 				.salario(new BigDecimal(5800)).build();
 
 		Persona persona5 = Persona.builder().nombre("Wilson ").apellido1("flores").apellido2("Martinez")
@@ -191,8 +191,73 @@ public class App {
 		 
 		 System.out.println(m);
 		 System.out.println(mm);
+		 
+		 /*
+		  * CREACION DE Colecciones Map Interface (Mapas) a partir de recorrer una lista
+		  * de elementos */
 		 	
+		/* Ejemplo # 1 del Lunes 6 de Julio.
+		 * 
+		 * Recorrer la lista de personas y obtener una nueva coleccion que agrupe total
+		 * de personas por genero */
+		 
+		 // Para la solucion, lo primero a tener en cuenta es tipo de datos que va a ir
+		 // en la clave del mapa y en el valor
+		 Map<Genero, Long> personasAgrupadasPorGenero = personas.stream()
+				 .collect(Collectors.groupingBy(persona -> persona.genero(), 
+						 Collectors.counting()));
+		 
+		 /* La creacion del mapa anterior esta bien, pero se puede mejorar
+		  * ¿Como? 
+		  * 
+		  * Rta. Substituir la expresion lambda que se pasa al metodo groupingBy por 
+		  * el metodo genero por referencia */
+		 Map<Genero, Long> personasAgrupadasPorGenero2 = personas.stream()
+				 .collect(Collectors.groupingBy(Persona::genero, 
+						 Collectors.counting()));
+		 
+		 
+		 /* Ejemplo # 2 del Lunes 6 de Julio.
+		  *
+		  * Recorrer la coleccion de personas y obtener una nueva coleccion 
+		  * que agrupe personas por Genero
+		  * */
+		 
+		 Map<Genero, List<Persona>> personasAgrupadasPorGenero3 = personas.stream()
+				 .collect(Collectors.groupingBy(Persona::genero));
+		 
+		 
+		 System.out.println(personasAgrupadasPorGenero3);
+		 
+		 /* Ejemplo # 3.
+		  * 
+		  * Recorrer la lista de personas y obtener una nueva colecion que 
+		  * agrupe personas por genero y edad */
+		 
+		 Map<Genero, Map<Long, List<Persona>>> personasPorGeneroYEdad;
+		 
+
+		 personasPorGeneroYEdad = personas.stream()
+				 .collect(Collectors.groupingBy(Persona::genero, 
+						 	Collectors.groupingBy(Persona::edad)));
+		 
+		 
+		 /* Ejemplo # 4 
+		  * 
+		  * Recorrer la lista de personas y obtener una nueva coleccion que agrupe
+		  * nombres de persona, sin duplicados, agrupados por Genero y edad */
+		 
+		 Map<Genero, Map<Long, Set<String>>> nombresDePersonaPorGeneroYEdad;
 		
+		 
+		nombresDePersonaPorGeneroYEdad = personas.stream()
+				.collect(Collectors.groupingBy(Persona::genero,
+						Collectors.groupingBy(Persona::edad,
+							Collectors.mapping(Persona::nombre,
+									Collectors.toSet()))));
+		
+		System.out.println(nombresDePersonaPorGeneroYEdad);
+		 
 		
 	}
 }
