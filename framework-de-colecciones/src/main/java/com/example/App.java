@@ -258,7 +258,53 @@ public class App {
 		
 		System.out.println(nombresDePersonaPorGeneroYEdad);
 		 
+		/* Una coleccion de tipo Map Interface no se puede recorrer utilizando las tres
+		 * formas de recorrer una coleccion (Iterator, for mejorado y operaciones de 
+		 * agregado) a no ser que se utilize una de las denominadas vistas de colecciones
+		 * (Collection Views), para especificar con que parte de la coleccion Map queremos
+		 * trabar.
+		 * 
+		 * Las vistas de colecciones permiten trabajar con las claves del mapa solamente,
+		 * con los valores o con ambos */
 		
+		/* A continuacion vamos a recorrer cada una de las colecciones Map que hemos
+		 * creado, hoy lunes 6 de Julio, primero utilizando sentencia for mejorada y luego Operaciones de
+		 * Agregado. */
+		
+		/* 1- Recorriendo la coleccion de personasAgrupadasPorGenero
+		 * 
+		 *  Las vistas de colecciones son las siguientes: 
+		 *  	- keySet(): Permite acceder solamente a las claves del mapa 
+		 *  	- values(): Permite acceder solamente a los valores de cada entrada 
+		 *  				del mapa
+		 *      - entrySet(): Permite acceder tanto a las claves como a los valores 
+		 *      			 de las entradas del mapa */
+		
+		for (Map.Entry<Genero, Long> entry : personasAgrupadasPorGenero.entrySet()) {
+			
+			Genero key = entry.getKey();
+			Long value = entry.getValue();
+			
+			System.out.println("Del genero: " + key + ", hay " + value + " personas");
+			// System.out.println("Existen " + value + " personas");
+		}
+		
+		/* 2- Recorrer el mapa de personasAgrupadasPorGenero3 y mostrar la lista de
+		 * personas de cada genero ordenada primero por edad y luego por el salario */
+		
+		// Vamos a utilizar sentencia for mejorado, conjuntamente con operaciones de 
+		// de agregado a la hora de recorrer la lista de personas de cada genero
+		
+		for (Map.Entry<Genero, List<Persona>> entry : personasAgrupadasPorGenero3.entrySet()) {
+			
+			System.out.println("Del genero:  " + entry.getKey());
+			System.out.println("El listado de personas ordenado por edad, primero y"
+					+ " salario posteriormente es: ");
+			
+			entry.getValue().stream()
+				.sorted(Comparator.comparing(Persona::edad).thenComparing(Persona::salario))
+				.forEach(System.out::println);
+		}
 	}
 }
 
