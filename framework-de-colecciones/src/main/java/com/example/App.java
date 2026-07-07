@@ -297,14 +297,24 @@ public class App {
 		
 		for (Map.Entry<Genero, List<Persona>> entry : personasAgrupadasPorGenero3.entrySet()) {
 			
-			System.out.println("Del genero:  " + entry.getKey());
+			Genero key = entry.getKey();
+			
+			// value es una lista de personas, por lo tanto, para recorrerla y mostrarla
+			List<Persona> value = entry.getValue();
+			
+			System.out.println("Del genero:  " + key);
 			System.out.println("El listado de personas ordenado por edad, primero y"
 					+ " salario posteriormente es: ");
 			
-			entry.getValue().stream()
-				.sorted(Comparator.comparing(Persona::edad).thenComparing(Persona::salario))
+			// Recordar que value es una lista de personas, 
+			// por lo tanto, para recorrerla y mostrarla
+			value.stream()
+				.sorted(Comparator.comparing(Persona::edad)
+						.thenComparing(Persona::salario))
 				.forEach(System.out::println);
 		}
+		
+		
 	}
 }
 
