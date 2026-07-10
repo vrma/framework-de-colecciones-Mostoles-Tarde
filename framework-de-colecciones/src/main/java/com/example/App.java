@@ -314,6 +314,30 @@ public class App {
 				.forEach(System.out::println);
 		}
 		
+		/* RECORRIENDO LAS COLECCIONES CREADAS DE TIPO MAP INTERFACE UTILIZANDO
+		 * OPERACIONES DE AGREGADO */
+		
+		/* Vamos a recorrer la coleccion creada en el punto # 3, es decir, 
+		 * personasPorGeneroYEdad */
+		
+		personasPorGeneroYEdad.entrySet().stream().forEach(entry1 -> {
+			
+			Genero key = entry1.getKey();
+			
+			System.out.println("Del genero " + key );
+			Map<Long, List<Persona>> value = entry1.getValue();
+			
+			value.entrySet().stream().forEach(entry2 -> {
+				
+				Long edad = entry2.getKey();
+				System.out.println("Con edad " + edad);
+				
+				System.out.println("Las personas son las siguientes ");
+				List<Persona> personasMismaEdad = entry2.getValue();
+				
+				personasMismaEdad.forEach(System.out::println);
+			});
+		});
 		
 	}
 }
